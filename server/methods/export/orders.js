@@ -9,6 +9,7 @@ import { convertWeight } from "/lib/api";
 import { Orders, Shops } from "/lib/collections";
 import { getApiInfo } from "../api";
 
+
 /**
  * @private
  * @summary build a new object for export to Shopify
@@ -60,6 +61,7 @@ function convertOrderToShopifyOrder(doc, index, shopId, existingCustomer = undef
  * @returns {Number} the normalized value
  */
 function normalizeWeight(weight, shopId) {
+  check(weight, Match.OneOf("g", "oz", "lb", "kg"));
   // if weight is not grams, convert to grams if is grams just return
   const shop = Shops.findOne(shopId);
   const { baseUOM } = shop;
@@ -77,6 +79,7 @@ function normalizeWeight(weight, shopId) {
   if (baseUOM === "kg") {
     return convertWeight("kg", "g", weight);
   }
+  throw new Meteor.Error("invalid-parameter", "Invalid weight parameter");
 }
 
 /**
@@ -158,12 +161,26 @@ function convertAddress(address) {
   return convertedAddress;
 }
 
-async function isExistingCustomer(address, email, shopify) {
+/**
+ * @private
+ * @summary Check if customer already exists
+ * @param {String} email - Emails to search by
+ * @param {Object} shopify - Instance of shopify API
+ * @returns {Promise<any>}
+ */
+async function isExistingCustomer(email, shopify) {
   const query = `email:${email}`;
   const customerByEmailPromise = shopify.customer.search({ query });
   return customerByEmailPromise;
 }
 
+/**
+ * @private
+ * @summary Normalize phone to Shopify-compatible format
+ * @param {String} phoneToNormalize - phone to Normalize
+ * @param {String} countryCode - country code to establish phone format
+ * @returns {string | * | void} - Normalized phone
+ */
 function normalizePhone(phoneToNormalize, countryCode) {
   const { phone } = parse(phoneToNormalize, countryCode);
   const formattedPhone = format(phone, countryCode, "International").replace(/\s/g, "");
@@ -229,7 +246,7 @@ export async function exportToShopify(doc) {
     const { shopId } = doc.billing[index];
     const apiCreds = getApiInfo(shopId);
     const shopify = new Shopify(apiCreds);
-    const existingCustomerQuery = await isExistingCustomer(doc.billing[index].address, doc.email, shopify); // eslint-disable-line no-await-in-loop
+    const existingCustomerQuery = await isExistingCustomer(doc.email, shopify); // eslint-disable-line no-await-in-loop
     // this should never happen but I want a meaningful error here in case it does
     if (existingCustomerQuery.length > 1) {
       throw new Meteor.Error("duplicate-customer", "Discovered more than one customer in Shopify. Cannot continue");

@@ -6,6 +6,7 @@ import { exportToShopify } from "../methods/export/orders";
  * @private
  * @summary Mark orders as exported after export
  * @param {Object} order - the order to mark as failed
+ * @returns {undefined} undefined
  */
 function markExportFailed(order) {
   const shops = Object.keys(order.getItemsByShop());

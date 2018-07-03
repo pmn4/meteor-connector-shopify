@@ -1,8 +1,14 @@
 import { FileRecord } from "@reactioncommerce/file-collections";
+import fetch from "node-fetch";
 import { Jobs } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/server";
-import fetch from "node-fetch";
 
+/**
+ * @summary Add media from URL
+ * @param {String} url - url from which to grab image
+ * @param {Object} metadata - Metadata to add to the image
+ * @returns {Promise<void>} - Result of Media insert
+ */
 async function addMediaFromUrl({ url, metadata }) {
   const fileRecord = await FileRecord.fromUrl(url, { fetch });
 

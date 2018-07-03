@@ -3,7 +3,11 @@ import { Job } from "/imports/plugins/core/job-collection/lib";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Jobs } from "/lib/collections";
 
-
+/**
+ * @summary Add the export job to the queue
+ * @param {String} orderId - the id of the Order to export
+ * @returns {undefined} undefined
+ */
 function addExportJob(orderId) {
   new Job(Jobs, "connectors/shopify/export/order", { orderId })
     .priority("normal")

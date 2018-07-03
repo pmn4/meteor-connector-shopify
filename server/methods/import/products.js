@@ -349,15 +349,15 @@ export const methods = {
             if (shopifyVariants) {
               Logger.debug(`Importing ${shopifyProduct.title} variants`);
 
-              shopifyVariants.forEach((variant, i) => {
-                const shopifyVariant = shopifyProduct.variants.find((v) => v.option1 === variant);
+              shopifyVariants.forEach((variant, variantIndex) => {
+                const shopifyVariant = shopifyProduct.variants.find((thisVariant) => thisVariant.option1 === variant);
 
                 if (shopifyVariant) {
                   // create the Reaction variant
                   const reactionVariant = createReactionVariantFromShopifyVariant({
                     shopifyVariant,
                     variant,
-                    index: i,
+                    index: variantIndex,
                     ancestors: [reactionProductId],
                     shopId
                   });
@@ -369,15 +369,15 @@ export const methods = {
                   // If we have shopify options, create reaction options
                   if (shopifyOptions) {
                     Logger.debug(`Importing ${shopifyProduct.title} ${variant} options`);
-                    shopifyOptions.forEach((option, j) => {
+                    shopifyOptions.forEach((option, optionIndex) => {
                       // Find the option that nests under our current variant.
-                      const shopifyOption = shopifyProduct.variants.find((o) => o.option1 === variant && o.option2 === option);
+                      const shopifyOption = shopifyProduct.variants.find((thisVariant) => thisVariant.option1 === variant && thisVariant.option2 === option);
 
                       if (shopifyOption) {
                         const reactionOption = createReactionVariantFromShopifyVariant({
                           shopifyVariant: shopifyOption,
                           variant: option,
-                          index: j,
+                          index: optionIndex,
                           ancestors: [reactionProductId, reactionVariantId],
                           shopId
                         });
@@ -426,15 +426,15 @@ export const methods = {
                         if (shopifyTernaryOptions) {
                           Logger.warn("Importing shopify product with 3 options. The Reaction UI does not currently support this.");
                           Logger.debug(`Importing ${shopifyProduct.title} ${variant} ${option} options`);
-                          shopifyTernaryOptions.forEach((ternaryOption, k) => {
+                          shopifyTernaryOptions.forEach((ternaryOption, ternaryOptionIndex) => {
                             // Find the option that nests under our current variant.
-                            const shopifyTernaryOption = shopifyProduct.variants.find((o) => o.option1 === variant && o.option2 === option && o.option3 === ternaryOption); // eslint-disable-line max-len
+                            const shopifyTernaryOption = shopifyProduct.variants.find((thisVariant) => thisVariant.option1 === variant && thisVariant.option2 === option && thisVariant.option3 === ternaryOption); // eslint-disable-line max-len
 
                             if (shopifyTernaryOption) {
                               const reactionTernaryOption = createReactionVariantFromShopifyVariant({
                                 shopifyVariant: shopifyTernaryOption,
                                 variant: ternaryOption,
-                                index: k,
+                                index: ternaryOptionIndex,
                                 ancestors: [reactionProductId, reactionVariantId, reactionOptionId],
                                 shopId
                               });

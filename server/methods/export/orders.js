@@ -166,7 +166,7 @@ function convertAddress(address) {
  * @summary Check if customer already exists
  * @param {String} email - Emails to search by
  * @param {Object} shopify - Instance of shopify API
- * @returns {Promise<any>}
+ * @returns {Promise<any>} - Pronise for boolean value
  */
 async function isExistingCustomer(email, shopify) {
   const query = `email:${email}`;
@@ -235,7 +235,7 @@ function convertShipping(order, index) {
  * @summary Export an order to Shopify
  * @memberof Helpers
  * @param {Object} doc - The order to convert
- * @returns {Promise.<Array>} - An array of exported orders
+ * @returns {Promise.<Array>} shopifyorders - An array of exported orders
  */
 export async function exportToShopify(doc) {
   const numShopOrders = doc.billing.length; // if we have multiple billing, we have multiple shops
@@ -268,9 +268,10 @@ export async function exportToShopify(doc) {
  * @param {Object} exportedOrder the converted order
  * @param {String} shopId - the shopId to attach
  * @param {Object} order - the order to be marked
+ * @returns {Number} - result of Orders updates
  */
 function markExported(exportedOrder, shopId, order) {
-  Orders.update({ _id: order._id }, {
+  return Orders.update({ _id: order._id }, {
     $push: {
       exportHistory: {
         status: "success",

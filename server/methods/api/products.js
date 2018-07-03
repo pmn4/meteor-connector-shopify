@@ -36,7 +36,7 @@ export const methods = {
       const count = await shopify.product.count(opts);
       return count;
     } catch (err) {
-      Logger.error("Something went wrong during Shopify products count");
+      return Logger.error("Something went wrong during Shopify products count");
     }
   }
 };

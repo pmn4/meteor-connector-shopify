@@ -16,6 +16,7 @@ export const methods = {
    *                                topic:method - e.g. orders/create:updateInventory
    *                                The top will be used to subscribe to a webhook and each integration will be stored
    *                                in the integrations array within the shopify webhooks settings
+   *  @param {String} webhooksDomain - The domain to use for the webhooks
    *  @returns {undefined}
    */
   "connectors/shopify/sync/setup"(integrations, webhooksDomain) {

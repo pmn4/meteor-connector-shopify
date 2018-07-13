@@ -8,9 +8,9 @@ but welcome the community to contribute.
 
 ## How to install
 
-1. Navigate to `<reaction-root>/imports/plugins/custom`
 1. `git clone git@github.com:reaction-contrib/meteor-connectors-shopify.git`
-1. `reaction reset`
+1. Copy the `connectors` and `connectors-shopify` to `<reaction-root>/imports/plugins/custom`
+1. `reaction reset -y`
 
 ## Configuration
 

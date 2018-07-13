@@ -23,9 +23,6 @@
     "url": "https://github.com/reaction-contrib/meteor-connector-shopify/issues"
   },
   "homepage": "https://github.com/reaction-contrib/meteor-connector-shopify#readme",
-  "dependencies": {
-    "shopify-api-node": "^2.10.2"
-  },
   "devDependencies": {
     "@reactioncommerce/eslint-config": "1.8.0",
     "eslint": "^4.19.1",

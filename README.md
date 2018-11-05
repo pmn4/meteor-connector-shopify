@@ -8,7 +8,7 @@ but welcome the community to contribute.
 
 ## How to install
 
-1. `git clone git@github.com:reaction-contrib/meteor-connectors-shopify.git`
+1. `git clone git@github.com:reaction-contrib/meteor-connector-shopify.git`
 1. Copy the `connectors` and `connectors-shopify` to `<reaction-root>/imports/plugins/custom`
 1. `npm install --save shopify-api-node` (it can't be added to the local `package.json`
 1. `reaction reset -y`
